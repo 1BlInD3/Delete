@@ -39,13 +39,22 @@ namespace PaintCheck
         public int GetRowNumber() 
         {
             int val = 0;
-            xlRange = worksheet.UsedRange;
+         //   xlRange = worksheet.UsedRange;
             //val = xlRange.Rows.Count;
             val = worksheet.Cells.Find("*", System.Reflection.Missing.Value,
                                System.Reflection.Missing.Value, System.Reflection.Missing.Value,
                                _Excel.XlSearchOrder.xlByRows, _Excel.XlSearchDirection.xlPrevious,
                                false, System.Reflection.Missing.Value, System.Reflection.Missing.Value).Row;
+            //excel.Quit();
             return val;
+        }
+        public void WorkBookClose() 
+        {
+            workbook.Close(0);
+        }
+        public void ExcelClose()
+        {
+            excel.Quit();
         }
  
     }
