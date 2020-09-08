@@ -52,6 +52,7 @@
             this.successList.Name = "successList";
             this.successList.Size = new System.Drawing.Size(192, 238);
             this.successList.TabIndex = 1;
+            this.successList.SelectedIndexChanged += new System.EventHandler(this.successList_SelectedIndexChanged);
             // 
             // failList
             // 
@@ -60,6 +61,7 @@
             this.failList.Name = "failList";
             this.failList.Size = new System.Drawing.Size(186, 238);
             this.failList.TabIndex = 2;
+            this.failList.SelectedIndexChanged += new System.EventHandler(this.failList_SelectedIndexChanged);
             // 
             // label1
             // 
