@@ -17,9 +17,9 @@ namespace PaintCheck
 {
     public partial class Form1 : Form
     {
-        string folderPath = @"C:\Users\balindattila\Desktop\templates";
+        string folderPath = @"C:\Users\balindattila\Desktop\torlendo";
         List<string> lista = new List<string>();
-        Excel1 excel = new Excel1(@"C:\Users\balindattila\Desktop\torlendo4.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
+        Excel1 excel = new Excel1(@"C:\Users\balindattila\Desktop\ezres.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
 
         public Form1()
         {
@@ -59,19 +59,19 @@ namespace PaintCheck
             if (dir.Exists)
             {
 
-                MessageBox.Show($"Létezik : {path}");
+              //  MessageBox.Show($"Létezik : {path}");
                 if (file.Exists && IsFileLocked(file) == false)
                 {
-                    MessageBox.Show("Létezem és nem fogja semmi");
+                  //  MessageBox.Show("Létezem és nem fogja semmi");
 
                     try
                     {
                         file.Delete();
-                        MessageBox.Show("Thumbs.db törölve");
+                       // MessageBox.Show("Thumbs.db törölve");
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.ToString());
+                      //  MessageBox.Show(e.ToString());
                         failList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
                     }
 
@@ -79,7 +79,7 @@ namespace PaintCheck
                     {
                         files.Delete();
                     }
-                    MessageBox.Show("Fájlok törölve");
+                  //  MessageBox.Show("Fájlok törölve");
 
                     try
                     {
@@ -105,7 +105,7 @@ namespace PaintCheck
                       {
                           files.Delete();
                       }
-                      MessageBox.Show("Fájlok törölve");
+                     // MessageBox.Show("Fájlok törölve");
 
                       try
                       {
@@ -123,16 +123,17 @@ namespace PaintCheck
             }
             else
             {
-                MessageBox.Show($"Nincs ilyen mappa + {path}");
-               // successList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+               // MessageBox.Show($"Nincs ilyen mappa + {path}");
+                successList.Items.Add("Nincs ilyen mappa :" +path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
             }
         }
-        public void CreateString(string folderPath)
+        public void CreateString()
         {
 
             for (int i = 0; i < excel.GetRowNumber(); i++)
             {
-               // string folderPath = @"C:\Users\balindattila\Desktop\templates";//@\\fs\PaintCheck\Klise Ellenorzes\templates";//"C:\\Users\\balindattila\\Desktop\\torlendo";
+                // string folderPath = @"C:\Users\balindattila\Desktop\templates";//@\\fs\PaintCheck\Klise Ellenorzes\templates";//"C:\\Users\\balindattila\\Desktop\\torlendo";
+                folderPath = @"C:\Users\balindattila\Desktop\torlendo";
                 folderPath = folderPath + "\\"+ lista[i];
                 DeleteFolder(folderPath);
             }
@@ -140,9 +141,10 @@ namespace PaintCheck
         }
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            CreateString(folderPath);
+            CreateString();
             if (MessageBox.Show("Sikeres törlés", "Gratulálok!", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
             {
+                deleteBtn.Enabled = false;
                 excel.WorkBookClose();
                 excel.ExcelClose();
             }
