@@ -37,7 +37,7 @@
             // 
             // deleteBtn
             // 
-            this.deleteBtn.Location = new System.Drawing.Point(70, 87);
+            this.deleteBtn.Location = new System.Drawing.Point(38, 103);
             this.deleteBtn.Name = "deleteBtn";
             this.deleteBtn.Size = new System.Drawing.Size(196, 97);
             this.deleteBtn.TabIndex = 0;
@@ -48,9 +48,9 @@
             // successList
             // 
             this.successList.FormattingEnabled = true;
-            this.successList.Location = new System.Drawing.Point(388, 43);
+            this.successList.Location = new System.Drawing.Point(272, 43);
             this.successList.Name = "successList";
-            this.successList.Size = new System.Drawing.Size(192, 238);
+            this.successList.Size = new System.Drawing.Size(308, 238);
             this.successList.TabIndex = 1;
             this.successList.SelectedIndexChanged += new System.EventHandler(this.successList_SelectedIndexChanged);
             // 
@@ -66,7 +66,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(388, 13);
+            this.label1.Location = new System.Drawing.Point(269, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(82, 13);
             this.label1.TabIndex = 3;
@@ -92,7 +92,7 @@
             this.Controls.Add(this.successList);
             this.Controls.Add(this.deleteBtn);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "PaintCheckDelete";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

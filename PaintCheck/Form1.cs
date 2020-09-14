@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Office.Interop.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
+using Outlook = Microsoft.Office.Interop.Outlook;
 
 
 namespace PaintCheck
@@ -159,15 +160,27 @@ namespace PaintCheck
         private void deleteBtn_Click(object sender, EventArgs e)
         {
             CreateString();
+            excel.WorkBookClose();
+            excel.ExcelClose();
             if (MessageBox.Show("Sikeres törlés", "Gratulálok!", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
             {
                 deleteBtn.Enabled = false;
-                excel.WorkBookClose();
-                excel.ExcelClose();
+               // excel.WorkBookClose();
+               // excel.ExcelClose();
                 Log(deletedFolder,successLogPath);
                 Log(noFolderList,noFolderLogPath);
                 Log(failedList,failedLogPath);
+                try
+                {
+                    SendEmail();
+                    MessageBox.Show("Sikeres mentés", "Gratulálok!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex) 
+                {
+                    MessageBox.Show(ex.Message + "Log elkészült, nem sikeres e-mail küldés");
+                }
             }
+            
         }
         protected virtual bool IsFileLocked(FileInfo file)
         {
@@ -212,7 +225,7 @@ namespace PaintCheck
         }
         private void failList_SelectedIndexChanged(object sender, EventArgs e)
         {
-           // OpenFolder(folderPath+failList.SelectedItem.ToString());
+            OpenFolder(folderPath+failList.SelectedItem.ToString());
         }
         private void Log(List<string> lista, string logFile)
         {
@@ -247,6 +260,18 @@ namespace PaintCheck
                 sw.Flush();
                 sw.Close();
             }
+        }
+        private void SendEmail()
+        {
+            Outlook._Application _app = new Outlook.Application();
+            Outlook._MailItem mail = (Outlook.MailItem)_app.CreateItem(Outlook.OlItemType.olMailItem);
+            mail.To = "attila.balind@fusetech.hu";
+            mail.Subject = "Klisé törlés logok";
+            mail.Importance = Outlook.OlImportance.olImportanceHigh;
+            mail.Attachments.Add(successLogPath, Outlook.OlAttachmentType.olByValue, 1, "SuccessLog");
+            mail.Attachments.Add(noFolderLogPath, Outlook.OlAttachmentType.olByValue, 1, "NoFolderLog");
+            mail.Attachments.Add(failedLogPath, Outlook.OlAttachmentType.olByValue, 1, "FailedLog");
+            ((Outlook.MailItem)mail).Send();
         }
     }
 }
