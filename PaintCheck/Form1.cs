@@ -22,6 +22,7 @@ namespace PaintCheck
         string successLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\SuccessLog.txt";
         string noFolderLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\NoFolderLog.txt";
         string failedLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\FailedLog.txt";
+        string excelListPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\ExcelList.txt";
         List<string> lista = new List<string>();
         Excel1 excel = new Excel1(@"C:\Users\balindattila\Desktop\EFEN.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
         List<string> deletedFolder = new List<string>();
@@ -38,17 +39,18 @@ namespace PaintCheck
             AddDataToList();
             successList.Items.Clear();
             failList.Items.Clear();
-            MessageBox.Show($"{excel.GetRowNumber()}");
+            allLabel.Text = (excel.GetRowNumber()).ToString() + " db";
 
         }
 
         public void AddDataToList()
         {
-            for (int i = 0; i < excel.GetRowNumber(); i++)
-            {
-                lista.Add(excel.ReadCell(i, 0));
-            }
-
+          
+                for (int i = 0; i < excel.GetRowNumber(); i++)
+                {
+                    lista.Add(excel.ReadCell(i, 0));
+                }
+                           
         }
         public void SHow()
         {
@@ -77,6 +79,7 @@ namespace PaintCheck
                         string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                         failList.Items.Add(folderName.Substring(1, folderName.Length - 1));
                         failedList.Add(folderName.Substring(1, folderName.Length - 1));
+                        failLabel.Text = (failedList.Count.ToString() + " db");
                         MessageBox.Show(exception.Message);
                     }
 
@@ -91,12 +94,14 @@ namespace PaintCheck
                         string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                         successList.Items.Add(folderName.Substring(1,folderName.Length-1));
                         deletedFolder.Add(folderName.Substring(1,folderName.Length-1));
+                        successLabel.Text = (deletedFolder.Count.ToString()+" db");
                     }catch (Exception e)
                     {
                         MessageBox.Show(e.ToString());
                         string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                         failList.Items.Add(folderName.Substring(1, folderName.Length - 1));
                         failedList.Add(folderName.Substring(1, folderName.Length - 1));
+                        failLabel.Text = (failedList.Count.ToString() + " db");
                     }
 
                 }
@@ -106,7 +111,8 @@ namespace PaintCheck
                     string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                     failList.Items.Add(folderName.Substring(1,folderName.Length-1));
                     failedList.Add(folderName.Substring(1, folderName.Length-1));
-                   
+                    failLabel.Text = (failedList.Count.ToString() + " db");
+
                     //ide még move
                 }
                 else
@@ -123,13 +129,15 @@ namespace PaintCheck
                           string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                           successList.Items.Add(folderName.Substring(1, folderName.Length-1));
                           deletedFolder.Add(folderName.Substring(1, folderName.Length-1));
-                        }
+                          successLabel.Text = (deletedFolder.Count.ToString() + " db");
+                      }
                       catch (Exception e)
                       {
                           MessageBox.Show(e.ToString());
                         string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                         failList.Items.Add(folderName.Substring(1, folderName.Length - 1));
                         failedList.Add(folderName.Substring(1, folderName.Length - 1));
+                        failLabel.Text = (failedList.Count.ToString() + " db");
                     }
                 }
 
@@ -140,6 +148,7 @@ namespace PaintCheck
                 string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                 successList.Items.Add("Nincs ilyen mappa :" + folderName.Substring(1,folderName.Length-1));
                 noFolderList.Add(folderName.Substring(1, folderName.Length-1));
+                noFolderLabel.Text = (noFolderList.Count.ToString()+ " db");
             }
         }
         public void CreateString()
@@ -167,6 +176,7 @@ namespace PaintCheck
                 Log(deletedFolder,successLogPath);
                 Log(noFolderList,noFolderLogPath);
                 Log(failedList,failedLogPath);
+                Log(lista,excelListPath);
                 try
                 {
                     SendEmail();
@@ -243,7 +253,10 @@ namespace PaintCheck
             }
             else 
             {
-                File.Create(logFile);
+                using (File.Create(logFile)) 
+                { 
+                
+                }
                 StreamWriter sw = File.AppendText(logFile);
                 sw.WriteLine();
                 sw.WriteLine("-------------");
@@ -268,6 +281,7 @@ namespace PaintCheck
             mail.Attachments.Add(successLogPath, Outlook.OlAttachmentType.olByValue, 1, "SuccessLog");
             mail.Attachments.Add(noFolderLogPath, Outlook.OlAttachmentType.olByValue, 1, "NoFolderLog");
             mail.Attachments.Add(failedLogPath, Outlook.OlAttachmentType.olByValue, 1, "FailedLog");
+            mail.Attachments.Add(excelListPath, Outlook.OlAttachmentType.olByValue, 1,"ExcelList");
             ((Outlook.MailItem)mail).Send();
         }
     }
