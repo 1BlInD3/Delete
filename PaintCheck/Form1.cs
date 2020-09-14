@@ -61,45 +61,42 @@ namespace PaintCheck
         {
             var dir = new DirectoryInfo(path);
             var file = new FileInfo(path + "\\Thumbs.db");
-            // var file = path + "\\" + "Thumbs.db";
-
+          
             if (dir.Exists)
             {
 
-              //  MessageBox.Show($"Létezik : {path}");
                 if (file.Exists && IsFileLocked(file) == false)
                 {
-                  //  MessageBox.Show("Létezem és nem fogja semmi");
-
                     try
                     {
                         file.Delete();
                        // MessageBox.Show("Thumbs.db törölve");
-                    }
-                    catch (Exception e)
+                    }catch (Exception exception)
                     {
-                      //  MessageBox.Show(e.ToString());
-                        failList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+                        //failList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+                        string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
+                        failList.Items.Add(folderName.Substring(1, folderName.Length - 1));
+                        failedList.Add(folderName.Substring(1, folderName.Length - 1));
+                        MessageBox.Show(exception.Message);
                     }
 
                     foreach (FileInfo files in dir.EnumerateFiles())
                     {
                         files.Delete();
                     }
-                  //  MessageBox.Show("Fájlok törölve");
 
                     try
                     {
                         dir.Delete(true);
-                        // MessageBox.Show("");
                         string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                         successList.Items.Add(folderName.Substring(1,folderName.Length-1));
                         deletedFolder.Add(folderName.Substring(1,folderName.Length-1));
-                    }
-                    catch (Exception e)
+                    }catch (Exception e)
                     {
                         MessageBox.Show(e.ToString());
-                        failList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+                        string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
+                        failList.Items.Add(folderName.Substring(1, folderName.Length - 1));
+                        failedList.Add(folderName.Substring(1, folderName.Length - 1));
                     }
 
                 }
@@ -118,8 +115,6 @@ namespace PaintCheck
                       {
                           files.Delete();
                       }
-                     // MessageBox.Show("Fájlok törölve");
-
                       try
                       {
                           dir.Delete(true);
@@ -128,12 +123,14 @@ namespace PaintCheck
                           string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
                           successList.Items.Add(folderName.Substring(1, folderName.Length-1));
                           deletedFolder.Add(folderName.Substring(1, folderName.Length-1));
-                    }
+                        }
                       catch (Exception e)
                       {
                           MessageBox.Show(e.ToString());
-                          failList.Items.Add(path);
-                      }
+                        string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
+                        failList.Items.Add(folderName.Substring(1, folderName.Length - 1));
+                        failedList.Add(folderName.Substring(1, folderName.Length - 1));
+                    }
                 }
 
             }
