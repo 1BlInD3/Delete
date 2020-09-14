@@ -17,9 +17,15 @@ namespace PaintCheck
 {
     public partial class Form1 : Form
     {
-        string folderPath = @"C:\Users\balindattila\Desktop\torlendo";
+        string folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
+        string successLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\SuccessLog.txt";
+        string noFolderLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\NoFolderLog.txt";
+        string failedLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\FailedLog.txt";
         List<string> lista = new List<string>();
-        Excel1 excel = new Excel1(@"C:\Users\balindattila\Desktop\ezres.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
+        Excel1 excel = new Excel1(@"C:\Users\balindattila\Desktop\EFEN.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
+        List<string> deletedFolder = new List<string>();
+        List<string> noFolderList = new List<string>();
+        List<string> failedList = new List<string>();
 
         public Form1()
         {
@@ -85,7 +91,9 @@ namespace PaintCheck
                     {
                         dir.Delete(true);
                         // MessageBox.Show("");
-                        successList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+                        string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
+                        successList.Items.Add(folderName.Substring(1,folderName.Length-1));
+                        deletedFolder.Add(folderName.Substring(1,folderName.Length-1));
                     }
                     catch (Exception e)
                     {
@@ -96,7 +104,11 @@ namespace PaintCheck
                 }
                 else if (file.Exists && IsFileLocked(file) == true)
                 {
-                    failList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+
+                    string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
+                    failList.Items.Add(folderName.Substring(1,folderName.Length-1));
+                    failedList.Add(folderName.Substring(1, folderName.Length-1));
+                   
                     //ide még move
                 }
                 else
@@ -112,7 +124,10 @@ namespace PaintCheck
                           dir.Delete(true);
                           // MessageBox.Show("");
                           successList.Items.Add(path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
-                      }
+                          string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
+                          successList.Items.Add(folderName.Substring(1, folderName.Length-1));
+                          deletedFolder.Add(folderName.Substring(1, folderName.Length-1));
+                    }
                       catch (Exception e)
                       {
                           MessageBox.Show(e.ToString());
@@ -123,8 +138,10 @@ namespace PaintCheck
             }
             else
             {
-               // MessageBox.Show($"Nincs ilyen mappa + {path}");
-                successList.Items.Add("Nincs ilyen mappa :" +path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
+                // MessageBox.Show($"Nincs ilyen mappa + {path}");
+                string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
+                successList.Items.Add("Nincs ilyen mappa :" + folderName.Substring(1,folderName.Length-1));
+                noFolderList.Add(folderName.Substring(1, folderName.Length-1));
             }
         }
         public void CreateString()
@@ -133,7 +150,7 @@ namespace PaintCheck
             for (int i = 0; i < excel.GetRowNumber(); i++)
             {
                 // string folderPath = @"C:\Users\balindattila\Desktop\templates";//@\\fs\PaintCheck\Klise Ellenorzes\templates";//"C:\\Users\\balindattila\\Desktop\\torlendo";
-                folderPath = @"C:\Users\balindattila\Desktop\torlendo";
+                folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
                 folderPath = folderPath + "\\"+ lista[i];
                 DeleteFolder(folderPath);
             }
@@ -147,6 +164,9 @@ namespace PaintCheck
                 deleteBtn.Enabled = false;
                 excel.WorkBookClose();
                 excel.ExcelClose();
+                Log(deletedFolder,successLogPath);
+                Log(noFolderList,noFolderLogPath);
+                Log(failedList,failedLogPath);
             }
         }
         protected virtual bool IsFileLocked(FileInfo file)
@@ -186,15 +206,47 @@ namespace PaintCheck
                 MessageBox.Show("Nincs ilyen mappa");
             }
         }
-
         private void successList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OpenFolder(@"C:\Users\balindattila\Desktop\torlendo");
+           // OpenFolder(@"C:\Users\balindattila\Desktop\torlendo");
         }
-
         private void failList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OpenFolder(folderPath+failList.SelectedItem.ToString());
+           // OpenFolder(folderPath+failList.SelectedItem.ToString());
+        }
+        private void Log(List<string> lista, string logFile)
+        {
+            if (File.Exists(logFile))
+            {
+                StreamWriter sw = File.AppendText(logFile);
+                sw.WriteLine();
+                sw.WriteLine("-------------");
+                sw.WriteLine(DateTime.Now);
+                sw.WriteLine("-------------");
+                sw.WriteLine();
+                foreach (var a in lista)
+                {
+                    sw.WriteLine(a);
+                }
+                sw.Flush();
+                sw.Close();
+            }
+            else 
+            {
+                File.Create(logFile);
+                StreamWriter sw = File.AppendText(logFile);
+                sw.WriteLine();
+                sw.WriteLine("-------------");
+                sw.WriteLine(DateTime.Now);
+                sw.WriteLine("-------------");
+                sw.WriteLine();
+                foreach (var a in lista)
+                {
+                    sw.WriteLine(a);
+                }
+                sw.Flush();
+                sw.Close();
+            }
         }
     }
 }
