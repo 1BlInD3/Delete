@@ -40,7 +40,6 @@ namespace PaintCheck
             successList.Items.Clear();
             failList.Items.Clear();
             allLabel.Text = (excel.GetRowNumber()).ToString() + " db";
-
         }
 
         public void AddDataToList()
