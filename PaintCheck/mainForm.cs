@@ -9,15 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Microsoft.Office.Interop.Excel;
-using Excel = Microsoft.Office.Interop.Excel;
+using System.Threading;
 using Outlook = Microsoft.Office.Interop.Outlook;
-
 
 namespace PaintCheck
 {
-    public partial class Form1 : Form
+    public partial class mainForm : Form
     {
+        //"Icon made by Freepik from www.flaticon.com"
         string folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
         string successLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\SuccessLog.txt";
         string noFolderLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\NoFolderLog.txt";
@@ -30,14 +29,19 @@ namespace PaintCheck
         List<string> failedList = new List<string>();
         int rowNumber = 0;
 
-        public Form1()
+        public mainForm()
         {
+            Thread t = new Thread(new ThreadStart(StartForm));
+            t.Start();
             InitializeComponent();
+            AddDataToList();
+            Thread.Sleep(500);
+            t.Abort();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            AddDataToList();
+           // AddDataToList();
             successList.Items.Clear();
             failList.Items.Clear();
         }
@@ -279,6 +283,10 @@ namespace PaintCheck
             mail.Attachments.Add(failedLogPath, Outlook.OlAttachmentType.olByValue, 1, "FailedLog");
             mail.Attachments.Add(excelListPath, Outlook.OlAttachmentType.olByValue, 1,"ExcelList");
             ((Outlook.MailItem)mail).Send();
+        }
+        public void StartForm()
+        {
+            Application.Run(new splashScreen());
         }
     }
 }

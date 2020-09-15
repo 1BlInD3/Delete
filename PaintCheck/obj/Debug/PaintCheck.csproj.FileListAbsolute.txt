@@ -3,9 +3,10 @@ C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\PaintCh
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\PaintCheck.pdb
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.csprojAssemblyReference.cache
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.csproj.ResolveComReference.cache
-C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.Form1.resources
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.Properties.Resources.resources
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.csproj.GenerateResource.cache
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.csproj.CoreCompileInputs.cache
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.exe
 C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.pdb
+C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.mainForm.resources
+C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\obj\Debug\PaintCheck.splashScreen.resources

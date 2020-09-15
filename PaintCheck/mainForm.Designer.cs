@@ -1,6 +1,6 @@
 ﻿namespace PaintCheck
 {
-    partial class Form1
+    partial class mainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
             this.deleteBtn = new System.Windows.Forms.Button();
             this.successList = new System.Windows.Forms.ListBox();
             this.failList = new System.Windows.Forms.ListBox();
@@ -174,7 +175,7 @@
             this.noFolderLabel.TabIndex = 12;
             this.noFolderLabel.Text = "0 db";
             // 
-            // Form1
+            // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -193,7 +194,8 @@
             this.Controls.Add(this.successList);
             this.Controls.Add(this.deleteBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Form1";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "mainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PaintCheckDelete";
             this.Load += new System.EventHandler(this.Form1_Load);
