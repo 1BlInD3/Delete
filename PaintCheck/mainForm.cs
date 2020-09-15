@@ -18,15 +18,15 @@ namespace PaintCheck
     {
         //"Icon made by Freepik from www.flaticon.com"
         string folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
-        string successLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\SuccessLog.txt";
-        string noFolderLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\NoFolderLog.txt";
-        string failedLogPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\FailedLog.txt";
-        string excelListPath = @"C:\Users\balindattila\source\repos\PaintCheckDelete\PaintCheck\bin\Debug\ExcelList.txt";
-        List<string> lista = new List<string>();
-        Excel1 excel = new Excel1(@"C:\Users\balindattila\Desktop\EFEN.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
+        string successLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\SuccessLog.txt";
+        string noFolderLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\NoFolderLog.txt";
+        string failedLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\FailedLog.txt";
+        string excelListPath = @"\\fs\PaintCheck\TorloProgram\LOG\ExcelList.txt";
+        Excel1 excel = new Excel1(@"\\fs\PaintCheck\TorloProgram\EFEN.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
         List<string> deletedFolder = new List<string>();
         List<string> noFolderList = new List<string>();
         List<string> failedList = new List<string>();
+        List<string> lista = new List<string>();
         int rowNumber = 0;
 
         public mainForm()
@@ -41,7 +41,7 @@ namespace PaintCheck
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           // AddDataToList();
+           
             successList.Items.Clear();
             failList.Items.Clear();
         }
