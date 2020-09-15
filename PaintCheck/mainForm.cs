@@ -36,12 +36,12 @@ namespace PaintCheck
             InitializeComponent();
             AddDataToList();
             Thread.Sleep(500);
-            t.Abort();
+            t.Abort();            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+            SetForegroundWindow(this.Handle);
             successList.Items.Clear();
             failList.Items.Clear();
         }
@@ -57,13 +57,6 @@ namespace PaintCheck
             excel.WorkBookClose();
             excel.ExcelClose();
 
-        }
-        public void SHow()
-        {
-            foreach (var a in lista)
-            {
-                MessageBox.Show(a);
-            }
         }
         public void DeleteFolder(string path)
         {
@@ -288,5 +281,7 @@ namespace PaintCheck
         {
             Application.Run(new splashScreen());
         }
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }
