@@ -234,7 +234,7 @@ namespace PaintCheck
                 StreamWriter sw = File.AppendText(logFile);
                 sw.WriteLine();
                 sw.WriteLine("-------------");
-                sw.WriteLine(DateTime.Now);
+                sw.WriteLine(DateTime.Now + "  "+ Environment.UserDomainName+"\\"+Environment.UserName);
                 sw.WriteLine("-------------");
                 sw.WriteLine();
                 foreach (var a in lista)
