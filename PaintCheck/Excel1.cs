@@ -50,7 +50,7 @@ namespace PaintCheck
         }
         public void WorkBookClose() 
         {
-            workbook.Close(0);
+            workbook.Close(false);
         }
         public void ExcelClose()
         {

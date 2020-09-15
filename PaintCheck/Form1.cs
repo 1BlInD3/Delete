@@ -28,6 +28,7 @@ namespace PaintCheck
         List<string> deletedFolder = new List<string>();
         List<string> noFolderList = new List<string>();
         List<string> failedList = new List<string>();
+        int rowNumber = 0;
 
         public Form1()
         {
@@ -39,17 +40,19 @@ namespace PaintCheck
             AddDataToList();
             successList.Items.Clear();
             failList.Items.Clear();
-            allLabel.Text = (excel.GetRowNumber()).ToString() + " db";
         }
 
         public void AddDataToList()
         {
-          
-                for (int i = 0; i < excel.GetRowNumber(); i++)
+            rowNumber = excel.GetRowNumber();
+                for (int i = 0; i < rowNumber; i++)
                 {
                     lista.Add(excel.ReadCell(i, 0));
                 }
-                           
+            allLabel.Text = (rowNumber.ToString()) + " db";
+            excel.WorkBookClose();
+            excel.ExcelClose();
+
         }
         public void SHow()
         {
@@ -153,7 +156,7 @@ namespace PaintCheck
         public void CreateString()
         {
 
-            for (int i = 0; i < excel.GetRowNumber(); i++)
+            for (int i = 0; i <rowNumber; i++)
             {
                 // string folderPath = @"C:\Users\balindattila\Desktop\templates";//@\\fs\PaintCheck\Klise Ellenorzes\templates";//"C:\\Users\\balindattila\\Desktop\\torlendo";
                 folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
@@ -165,27 +168,21 @@ namespace PaintCheck
         private void deleteBtn_Click(object sender, EventArgs e)
         {
             CreateString();
-            excel.WorkBookClose();
-            excel.ExcelClose();
-            if (MessageBox.Show("Sikeres törlés", "Gratulálok!", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
+            deleteBtn.Enabled = false;
+            Log(deletedFolder, successLogPath);
+            Log(noFolderList, noFolderLogPath);
+            Log(failedList, failedLogPath);
+            Log(lista, excelListPath);
+            try
             {
-                deleteBtn.Enabled = false;
-               // excel.WorkBookClose();
-               // excel.ExcelClose();
-                Log(deletedFolder,successLogPath);
-                Log(noFolderList,noFolderLogPath);
-                Log(failedList,failedLogPath);
-                Log(lista,excelListPath);
-                try
-                {
-                    SendEmail();
-                    MessageBox.Show("Sikeres mentés", "Gratulálok!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex) 
-                {
-                    MessageBox.Show(ex.Message + "Log elkészült, nem sikeres e-mail küldés");
-                }
+                SendEmail();
+                MessageBox.Show("Sikeres törlés", "Gratulálok!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Log elkészült, nem sikeres e-mail küldés");
+            }
+           
             
         }
         protected virtual bool IsFileLocked(FileInfo file)
