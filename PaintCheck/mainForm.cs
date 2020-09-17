@@ -18,11 +18,13 @@ namespace PaintCheck
     {
         //"Icon made by Freepik from www.flaticon.com"
         string folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
+        string excelPath = @"\\fs\PaintCheck\TorloProgram\EFEN.xlsx";
         string successLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\SuccessLog.txt";
         string noFolderLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\NoFolderLog.txt";
         string failedLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\FailedLog.txt";
         string excelListPath = @"\\fs\PaintCheck\TorloProgram\LOG\ExcelList.txt";
-        Excel1 excel = new Excel1(@"\\fs\PaintCheck\TorloProgram\EFEN.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
+        // Excel1 excel = new Excel1(@"\\fs\PaintCheck\TorloProgram\EFEN.xlsx", 1);//(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
+        Excel1 excel;
         List<string> deletedFolder = new List<string>();
         List<string> noFolderList = new List<string>();
         List<string> failedList = new List<string>();
@@ -31,6 +33,7 @@ namespace PaintCheck
 
         public mainForm()
         {
+            excelCheck(excelPath);
             Thread t = new Thread(new ThreadStart(StartForm));
             t.Start();
             InitializeComponent();
@@ -45,7 +48,6 @@ namespace PaintCheck
             successList.Items.Clear();
             failList.Items.Clear();
         }
-
         public void AddDataToList()
         {
             rowNumber = excel.GetRowNumber();
@@ -207,11 +209,7 @@ namespace PaintCheck
         {
             if (Directory.Exists(path))
             {
-                //ProcessStartInfo startInfo = new ProcessStartInfo
-                //{
-                //    Arguments = path,
-                //    Name = "explorer.exe";
-                //};
+               
                 Process.Start("explorer.exe", path);
             }
             else 
@@ -283,5 +281,27 @@ namespace PaintCheck
         }
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
+        public void excelCheck(string path)
+        {
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("Az alapértelmezett útvonalon nem található Excel fájl! \n Adj meg egy másikat","Figyelem",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    excel = new Excel1(filePath, 1);
+                }
+                else if (this.DialogResult == DialogResult.None) 
+                {
+                    Environment.Exit(-1);
+                }
+            }
+            else 
+            {
+                excel = new Excel1(@"\\fs\PaintCheck\TorloProgram\EFEN.xlsx", 1);
+            }
+        }
+      
     }
 }
