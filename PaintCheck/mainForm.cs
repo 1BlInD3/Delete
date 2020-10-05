@@ -18,7 +18,7 @@ namespace PaintCheck
     {
         //"Icon made by Freepik from www.flaticon.com"
         string folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
-        string excelPath = @"\\fs\PaintCheck\TorloProgram\torlendo2.xlsx";
+        string excelPath = @"\\fs\PaintCheck\TorloProgram\torlendo.xlsx";
         string successLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\SuccessLog.txt";
         string noFolderLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\NoFolderLog.txt";
         string failedLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\FailedLog.txt";
@@ -50,14 +50,22 @@ namespace PaintCheck
         }
         public void AddDataToList()
         {
-            rowNumber = excel.GetRowNumber();
+            if (excel.GetRowNumber() > 0)
+            {
+                rowNumber = excel.GetRowNumber();
                 for (int i = 0; i < rowNumber; i++)
                 {
                     lista.Add(excel.ReadCell(i, 0));
                 }
-            allLabel.Text = (rowNumber.ToString()) + " db";
-            excel.WorkBookClose();
-            excel.ExcelClose();
+                allLabel.Text = (rowNumber.ToString()) + " db";
+                excel.WorkBookClose();
+                excel.ExcelClose();
+            }
+            else {
+                SetForegroundWindow(this.Handle);
+                MessageBox.Show("AZ excel fájlod üres, kérlek válassz egy másikat");
+                Environment.Exit(-1);
+            }
 
         }
         public void DeleteFolder(string path)
@@ -228,39 +236,46 @@ namespace PaintCheck
         }
         private void Log(List<string> lista, string logFile)
         {
-            if (File.Exists(logFile))
+            try
             {
-                StreamWriter sw = File.AppendText(logFile);
-                sw.WriteLine();
-                sw.WriteLine("-------------");
-                sw.WriteLine(DateTime.Now + "  "+ Environment.UserDomainName+"\\"+Environment.UserName);
-                sw.WriteLine("-------------");
-                sw.WriteLine();
-                foreach (var a in lista)
+                if (File.Exists(logFile))
                 {
-                    sw.WriteLine(a);
+                    StreamWriter sw = File.AppendText(logFile);
+                    sw.WriteLine();
+                    sw.WriteLine("-------------");
+                    sw.WriteLine(DateTime.Now + "  " + Environment.UserDomainName + "\\" + Environment.UserName);
+                    sw.WriteLine("-------------");
+                    sw.WriteLine();
+                    foreach (var a in lista)
+                    {
+                        sw.WriteLine(a);
+                    }
+                    sw.Flush();
+                    sw.Close();
                 }
-                sw.Flush();
-                sw.Close();
+                else
+                {
+                    using (File.Create(logFile))
+                    {
+
+                    }
+                    StreamWriter sw = File.AppendText(logFile);
+                    sw.WriteLine();
+                    sw.WriteLine("-------------");
+                    sw.WriteLine(DateTime.Now);
+                    sw.WriteLine("-------------");
+                    sw.WriteLine();
+                    foreach (var a in lista)
+                    {
+                        sw.WriteLine(a);
+                    }
+                    sw.Flush();
+                    sw.Close();
+                }
             }
-            else 
+            catch (Exception e)
             {
-                using (File.Create(logFile)) 
-                { 
-                
-                }
-                StreamWriter sw = File.AppendText(logFile);
-                sw.WriteLine();
-                sw.WriteLine("-------------");
-                sw.WriteLine(DateTime.Now);
-                sw.WriteLine("-------------");
-                sw.WriteLine();
-                foreach (var a in lista)
-                {
-                    sw.WriteLine(a);
-                }
-                sw.Flush();
-                sw.Close();
+                MessageBox.Show($"{e}");
             }
         }
         private void SendEmail()
