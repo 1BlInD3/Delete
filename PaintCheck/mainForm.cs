@@ -18,7 +18,7 @@ namespace PaintCheck
     {
         //"Icon made by Freepik from www.flaticon.com"
         string folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
-        string excelPath = @"\\fs\PaintCheck\TorloProgram\EFEN.xlsx";
+        string excelPath = @"\\fs\PaintCheck\TorloProgram\torlendo2.xlsx";
         string successLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\SuccessLog.txt";
         string noFolderLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\NoFolderLog.txt";
         string failedLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\FailedLog.txt";
@@ -147,7 +147,8 @@ namespace PaintCheck
             {
                 // MessageBox.Show($"Nincs ilyen mappa + {path}");
                 string folderName = path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\'));
-                successList.Items.Add("Nincs ilyen mappa :" + folderName.Substring(1,folderName.Length-1));
+                // successList.Items.Add("Nincs ilyen mappa :" + folderName.Substring(1,folderName.Length-1));
+                successList.Items.Add("Nincs ilyen mappa : "+path.Substring(path.LastIndexOf('\\'), path.Length - path.LastIndexOf('\\')));
                 noFolderList.Add(folderName.Substring(1, folderName.Length-1));
                 noFolderLabel.Text = (noFolderList.Count.ToString()+ " db");
             }
@@ -287,6 +288,7 @@ namespace PaintCheck
             {
                 MessageBox.Show("Az alapértelmezett útvonalon nem található Excel fájl! \n Adj meg egy másikat","Figyelem",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Excel Files|*.xlsx;";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = openFileDialog.FileName;
@@ -299,9 +301,8 @@ namespace PaintCheck
             }
             else 
             {
-                excel = new Excel1(@"\\fs\PaintCheck\TorloProgram\EFEN.xlsx", 1);
+                excel = new Excel1(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
             }
         }
-      
     }
 }
