@@ -15,10 +15,10 @@ using Outlook = Microsoft.Office.Interop.Outlook;
 namespace PaintCheck
 {
     public partial class mainForm : Form
-    {
+    {  // EXCEL BEZÁRÁSOK
         //"Icon made by Freepik from www.flaticon.com"
         string folderPath = @"\\fs\PaintCheck\Klise Ellenorzes\templates";
-        string excelPath = @"\\fs\PaintCheck\TorloProgram\torlendo.xlsx";
+        string excelPath = @"\\fs\PaintCheck\TorloProgram\torlendo2.xlsx";
         string successLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\SuccessLog.txt";
         string noFolderLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\NoFolderLog.txt";
         string failedLogPath = @"\\fs\PaintCheck\TorloProgram\LOG\FailedLog.txt";
@@ -64,6 +64,8 @@ namespace PaintCheck
             else {
                 SetForegroundWindow(this.Handle);
                 MessageBox.Show("AZ excel fájlod üres, kérlek válassz egy másikat");
+                excel.WorkBookClose();
+                excel.ExcelClose();
                 Environment.Exit(-1);
             }
 
@@ -311,12 +313,26 @@ namespace PaintCheck
                 }
                 else if (this.DialogResult == DialogResult.None) 
                 {
+                   
                     Environment.Exit(-1);
                 }
             }
             else 
             {
                 excel = new Excel1(@"\\fs\PaintCheck\TorloProgram\torlendo.xlsx", 1);
+            }
+        }
+
+        private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                excel.WorkBookClose();
+                excel.ExcelClose();
+            }
+            catch (Exception) 
+            { 
+
             }
         }
     }
