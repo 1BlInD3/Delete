@@ -331,8 +331,8 @@ namespace PaintCheck
                 excel.ExcelClose();
             }
             catch (Exception) 
-            { 
-
+            {
+                System.Console.WriteLine("Nem tud kilépni");
             }
         }
     }
